@@ -2,6 +2,8 @@
 
 ![Twitchwatcher](https://i.ibb.co/PFG9tGp/image.png)
 
+Join our Discord for help: https://discord.gg/eSmz482
+
 ### What is Twitchwatcher:
 - Twitchwatcher is a Selenium Bot for Twitch (specialized for valorant) coded in Visual Basic .Net (.exe) for Windows.
 - It searches for active Streamers with Valorant Drops enabled.
