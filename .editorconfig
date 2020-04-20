@@ -1,0 +1,4 @@
+﻿[*.vb]
+
+# CA2000: Objekte verwerfen, bevor Bereich verloren geht
+dotnet_diagnostic.CA2000.severity = warning
