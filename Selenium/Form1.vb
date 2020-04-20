@@ -413,11 +413,9 @@ SearchChannel:
 
         If Streamwatch = True Then  'If no custom streamer found then do this...
             Try
-                Chatshow("1")
                 Dim Streamer = driver.FindElement(By.CssSelector("a[data-a-target='preview-card-channel-link']"))
                 Streamername = Streamer.Text
                 Streamer.Click()
-                Chatshow("1+")
             Catch
                 Chatshow("Something went wrong while searching for Streams")
                 GoTo SearchChannel
@@ -553,15 +551,11 @@ Ignorenext:
             Wait(2000)
 
             Try
-                Chatshow("1-")
                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div[2]/section/div/div[5]/div[3]/div[2]/div[2]/div[2]/div/div[2]/div/div/div[2]/div[3]/div/div/div/div[3]/div[5]/button")).Click()
-                Chatshow("1+")
                 Wait(1000)
             Catch
                 Try
-                    Chatshow("2-")
                     driver.FindElement(By.XPath("//*[contains(text(), 'Hide Chat')]")).Click()
-                    Chatshow("2+")
                     Wait(1000)
                 Catch
                     Chatshow("Something went wrong trying to find hide Chat Button")
