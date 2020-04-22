@@ -43,8 +43,6 @@ Public Class Form1
     Private chromeactive As Boolean = False
     Public driverx
     Public driver
-    Public options
-    Public driverService
 
     Const THREAD_BASE_PRIORITY_IDLE = -15       'Dont need all of them but will leave them here for further coding
     Const THREAD_BASE_PRIORITY_LOWRT = 15
@@ -172,31 +170,27 @@ Restart:
 
         '################################################################################ Browser Options ################################################################################
 
-        If chromeactive = True Then
-            Try
-                Dim optionsx As ChromeOptions = New ChromeOptions
-                Dim driverServicex = ChromeDriverService.CreateDefaultService()
-                options = optionsx
-                driverService = driverServicex
-                options.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36")
-            Catch
-                MessageBox.Show("Your Chromeversion is outdated. Please update your Google Chrome!")
-            End Try
+
+        Dim options As ChromeOptions = New ChromeOptions
+        Dim driverService = ChromeDriverService.CreateDefaultService()
+
+        Dim optionsx As FirefoxOptions = New FirefoxOptions
+        Dim driverServicex = FirefoxDriverService.CreateDefaultService
 
 
-            'WORK IN PROGRESS! Firefox -
-            '
-            'Else
-            '    Try
-            '        Dim optionsx As FirefoxOptions = New FirefoxOptions
-            '        Dim driverServicex = FirefoxDriverService.CreateDefaultService()
-            '        optionsx = optionsx
-            '        DriverService = driverServicex
-            '    Catch
-            '        MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
-            '    End Try
+        'WORK IN PROGRESS! Firefox -
+        '
+        'Else
+        '    Try
+        '        Dim optionsx As FirefoxOptions = New FirefoxOptions
+        '        Dim driverServicex = FirefoxDriverService.CreateDefaultService()
+        '        optionsx = optionsx
+        '        DriverService = driverServicex
+        '    Catch
+        '        MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
+        '    End Try
 
-        End If
+
 
         If chromehide.Checked = True Then
             options.AddArgument("headless")
@@ -231,14 +225,14 @@ Restart:
 
         If chromeactive = True Then
             Try
-                Dim driverx As ChromeDriver = New ChromeDriver()
+                Dim driver As ChromeDriver = New ChromeDriver(driverService, options)
                 driver = driverx
             Catch
                 MessageBox.Show("Your Chromeversion is outdated. Please update your Google Chrome!")
             End Try
         Else
             Try
-                Dim driverx As FirefoxDriver = New FirefoxDriver()
+                Dim driverx As FirefoxDriver = New FirefoxDriver(driverServicex, optionsx)
                 driver = driverx
             Catch
                 MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
