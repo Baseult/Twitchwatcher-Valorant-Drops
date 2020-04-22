@@ -19,11 +19,12 @@
 Imports System.IO
 Imports System.Net
 Imports System.Threading
+Imports Microsoft.VisualBasic
 Imports OpenQA.Selenium
 Imports OpenQA.Selenium.Chrome
+Imports OpenQA.Selenium.Firefox
 
 Public Class Form1
-    Private driverout As ChromeDriver
     Private do1 As Thread
     Private Waitms As String
     Private Waits As String
@@ -39,6 +40,11 @@ Public Class Form1
     Private subsonly As Boolean = False
     Private Follow As Boolean = False
     Private Chat As Boolean = False
+    Private chromeactive As Boolean = False
+    Public driverx
+    Public driver
+    Public options
+    Public driverService
 
     Const THREAD_BASE_PRIORITY_IDLE = -15       'Dont need all of them but will leave them here for further coding
     Const THREAD_BASE_PRIORITY_LOWRT = 15
@@ -105,7 +111,6 @@ Public Class Form1
     End Sub
 
     Private Sub Newinstance(sender As Object, e As EventArgs) Handles Button2.Click
-
         If Crossthread = True Then                      'If Crossthread enabled start new Task in crossthread
             If prioritymode.Checked = True Then
                 Chatshow("Started using Crossthread with low priority")
@@ -167,10 +172,31 @@ Restart:
 
         '################################################################################ Browser Options ################################################################################
 
-        Dim options As ChromeOptions = New ChromeOptions()
-        Dim driverService = ChromeDriverService.CreateDefaultService()
+        If chromeactive = True Then
+            Try
+                Dim optionsx As ChromeOptions = New ChromeOptions
+                Dim driverServicex = ChromeDriverService.CreateDefaultService()
+                options = optionsx
+                driverService = driverServicex
+                options.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36")
+            Catch
+                MessageBox.Show("Your Chromeversion is outdated. Please update your Google Chrome!")
+            End Try
 
-        options.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36")
+
+            'WORK IN PROGRESS! Firefox -
+            '
+            'Else
+            '    Try
+            '        Dim optionsx As FirefoxOptions = New FirefoxOptions
+            '        Dim driverServicex = FirefoxDriverService.CreateDefaultService()
+            '        optionsx = optionsx
+            '        DriverService = driverServicex
+            '    Catch
+            '        MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
+            '    End Try
+
+        End If
 
         If chromehide.Checked = True Then
             options.AddArgument("headless")
@@ -195,15 +221,30 @@ Restart:
         End If
 
         If tokenlogin.Checked = True Then
-            Chatshow("Starting Chrome for: " & tokeninput.Text)
+            Chatshow("Starting Browser for: " & tokeninput.Text)
         Else
-            Chatshow("Starting Chrome for: " & Namebox.Text)
+            Chatshow("Starting Browser for: " & Namebox.Text)
         End If
 
         '################################################################################ Start Browser ################################################################################
 
-        Dim driver As ChromeDriver = New ChromeDriver(driverService, options)
-        driverout = driver
+
+        If chromeactive = True Then
+            Try
+                Dim driverx As ChromeDriver = New ChromeDriver()
+                driver = driverx
+            Catch
+                MessageBox.Show("Your Chromeversion is outdated. Please update your Google Chrome!")
+            End Try
+        Else
+            Try
+                Dim driverx As FirefoxDriver = New FirefoxDriver()
+                driver = driverx
+            Catch
+                MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
+            End Try
+
+        End If
 
         driver.Navigate().GoToUrl("https://twitch.tv/login")
 
@@ -284,7 +325,7 @@ Restart:
                     Chatshow("Pressing Login Button")
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("//*[text()='Log In']"))
+                        driver.FindElement(By.XPath("//*[text()='Log In']"))
                     Catch
                         Chatshow("Something went wrong with pressing the Login Button")
                     End Try
@@ -625,7 +666,7 @@ Ignoremore:
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
 
-        html_source = driverout.PageSource
+        html_source = driver.PageSource
 
         If html_source.Contains("<p class=""tw-strong"">Subscribers-Only Chat</p>") Then
             Chatshow("Streamchat is Subscribers Only - Won't write in Chat")
@@ -633,12 +674,12 @@ Ignoremore:
 
             If Text1 = True Then
                 Try
-                    driverout.FindElement(By.ClassName("chat-input__textarea")).Click()
+                    driver.FindElement(By.ClassName("chat-input__textarea")).Click()
                     Chatshow("Click Textarea")
                     Wait(2000)
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                        driver.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
                         Chatshow("Click Textarea")
                         Wait(2000)
                     Catch
@@ -647,19 +688,19 @@ Ignoremore:
                 End Try
 
                 Try
-                    driverout.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
+                    driver.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
                     Chatshow("Click Okay")
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                        driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
                         Chatshow("Click Okay")
                     Catch
                         Try
-                            driverout.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
                             Chatshow("Click Okay")
                         Catch
                             Try
-                                driverout.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                driver.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
                                 Chatshow("Click Okay")
                             Catch
                                 Chatshow("Something went wrong while trying to write in Chat")
@@ -669,18 +710,18 @@ Ignoremore:
                 End Try
 
                 Try
-                    driverout.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput.Text)
+                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput.Text)
                     Chatshow("Write")
                     Wait(2000)
-                    driverout.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
+                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
                     Chatshow("Writing in Chat")
                     Text1 = False
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput.Text)
+                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput.Text)
                         Chatshow("Write")
                         Wait(2000)
-                        driverout.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
                         Chatshow("Writing in Chat")
                         Text1 = False
                     Catch
@@ -691,12 +732,12 @@ Ignoremore:
             ElseIf Text1 = False Then
 
                 Try
-                    driverout.FindElement(By.ClassName("chat-input__textarea")).Click()
+                    driver.FindElement(By.ClassName("chat-input__textarea")).Click()
                     Chatshow("Click Textarea")
                     Wait(2000)
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                        driver.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
                         Chatshow("Click Textarea")
                         Wait(2000)
                     Catch
@@ -705,19 +746,19 @@ Ignoremore:
                 End Try
 
                 Try
-                    driverout.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
+                    driver.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
                     Chatshow("Click Okay")
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                        driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
                         Chatshow("Click Okay")
                     Catch
                         Try
-                            driverout.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
                             Chatshow("Click Okay")
                         Catch
                             Try
-                                driverout.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                driver.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
                                 Chatshow("Click Okay")
                             Catch
                                 Chatshow("Something went wrong while trying to write in Chat")
@@ -727,18 +768,18 @@ Ignoremore:
                 End Try
 
                 Try
-                    driverout.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput2.Text)
+                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput2.Text)
                     Chatshow("Write")
                     Wait(2000)
-                    driverout.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
+                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
                     Chatshow("Writing in Chat")
                     Text1 = False
                 Catch
                     Try
-                        driverout.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput2.Text)
+                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput2.Text)
                         Chatshow("Write")
                         Wait(2000)
-                        driverout.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
                         Chatshow("Writing in Chat")
                         Text1 = False
                     Catch
@@ -752,11 +793,11 @@ Ignoremore:
 
     Private Sub Timer5_Tick(sender As Object, e As EventArgs) Handles Timer5.Tick
         Try
-            driverout.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
+            driver.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
             Chatshow("Claimed Channelpoints")
         Catch
             Try
-                driverout.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div/div/button")).Click()
+                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div/div/button")).Click()
                 Chatshow("Claimed Channelpoints")
             Catch
             End Try
@@ -810,9 +851,9 @@ Ignoremore:
         Try
             Dim x() As Process
             x = Process.GetProcesses
-            driverout.Quit()
+            driver.Quit()
             For Each p As Process In x
-                If p.MainWindowTitle.Contains("chrome") Or p.MainWindowTitle.Contains("twitch") Then
+                If p.MainWindowTitle.Contains("chrome") Or p.MainWindowTitle.Contains("twitch") Or p.MainWindowTitle.Contains("Firefox") or p.MainWindowTitle.Contains("chromedriver") Then
                     Try
                         p.Kill()
                     Catch
@@ -889,39 +930,6 @@ Ignoremore:
         End If
     End Sub
 
-    Private Sub OvalShape1_Click(sender As Object, e As EventArgs) Handles OvalShape1.Click
-        If OvalShape1.Left <= 460 Then
-            Timer3.Start()
-        End If
-
-        If OvalShape1.Left >= 483 Then
-            Timer4.Start()
-        End If
-    End Sub
-
-    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        OvalShape1.Left += 5
-        If OvalShape1.Left >= 483 Then
-            Crossthread = True
-            Timer3.Stop()
-        End If
-    End Sub
-
-    Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
-        OvalShape1.Left -= 5
-        If OvalShape1.Left <= 460 Then
-            Crossthread = False
-            Timer4.Stop()
-            If prioritymode.Checked = True Then
-                MessageBox.Show("Low Prioritymode only works with CrossThreadCalls" & vbLf & vbLf & "Please disable Low Priority!")
-                If OvalShape1.Left <= 460 Then
-                    Timer3.Start()
-                End If
-            End If
-        End If
-
-    End Sub
-
     Private Sub Muteaudio_CheckedChanged(sender As Object, e As EventArgs) Handles muteaudio.CheckedChanged
         If muteaudio.Checked = True Then
             customaudio.Hide()
@@ -933,6 +941,29 @@ Ignoremore:
             customaudio.Enabled = True
             volinput.Show()
             volinput.Enabled = True
+        End If
+    End Sub
+
+    Private Sub Chromebox_CheckedChanged(sender As Object, e As EventArgs) Handles chromebox.CheckedChanged
+        If chromebox.Checked = True Then
+            chromeactive = True
+            Firefoxbox.Hide()
+            Firefoxbox.Enabled = False
+        Else
+            Firefoxbox.Show()
+            Firefoxbox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub Firefoxbox_CheckedChanged(sender As Object, e As EventArgs) Handles Firefoxbox.CheckedChanged
+        If Firefoxbox.Checked = True Then
+            chromeactive = False
+            chromebox.Hide()
+            chromebox.Enabled = False
+            MessageBox.Show("WORK IN PROGRESS!" & vblf & """Bot Settings"" will not work for Firefox. Please use Chrome for that!")
+        Else
+            chromebox.Show()
+            chromebox.Enabled = True
         End If
     End Sub
 
@@ -978,7 +1009,7 @@ Ignoremore:
         End If
     End Sub
 
-    Private Sub prioritymode_CheckedChanged(sender As Object, e As EventArgs) Handles prioritymode.CheckedChanged
+    Private Sub Prioritymode_CheckedChanged(sender As Object, e As EventArgs) Handles prioritymode.CheckedChanged
 
         If prioritymode.Checked = True Then
             MessageBox.Show("This feature is work in progress. It works but may leads to issues." & vbLf & vbLf & "If you experience any issues disable it!")
@@ -988,5 +1019,24 @@ Ignoremore:
             End If
         End If
 
+    End Sub
+
+    Private Sub Backgroundbox_CheckedChanged(sender As Object, e As EventArgs) Handles backgroundbox.CheckedChanged
+        If backgroundbox.Checked = True Then
+            Crossthread = False
+            crossthreadbox.Hide()
+            crossthreadbox.Enabled = False
+            If prioritymode.Checked = True Then
+                MessageBox.Show("Low Prioritymode only works with CrossThreadCalls" & vbLf & vbLf & "Please disable Low Priority!")
+            End If
+        End If
+    End Sub
+
+    Private Sub Crossthreadbox_CheckedChanged(sender As Object, e As EventArgs) Handles crossthreadbox.CheckedChanged
+        If crossthreadbox.Checked = True Then
+            Crossthread = True
+            backgroundbox.Hide()
+            backgroundbox.Enabled = False
+        End If
     End Sub
 End Class
