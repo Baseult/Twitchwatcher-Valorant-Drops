@@ -1029,6 +1029,9 @@ Ignoremore:
             If prioritymode.Checked = True Then
                 MessageBox.Show("Low Prioritymode only works with CrossThreadCalls" & vbLf & vbLf & "Please disable Low Priority!")
             End If
+        Else
+            crossthreadbox.Show()
+            crossthreadbox.Enabled = True
         End If
     End Sub
 
@@ -1037,6 +1040,9 @@ Ignoremore:
             Crossthread = True
             backgroundbox.Hide()
             backgroundbox.Enabled = False
+        Else
+            backgroundbox.Show()
+            backgroundbox.Enabled = True
         End If
     End Sub
 End Class
