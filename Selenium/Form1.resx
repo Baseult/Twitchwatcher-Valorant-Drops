@@ -117,21 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>195, 17</value>
-  </metadata>
-  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>195, 17</value>
-  </metadata>
-  <data name="Label4.ToolTip" xml:space="preserve">
-    <value>It will watch a Streamer for X Minutes until it searches a new one.
-(It won't actually search another Streamer if the current one is still active and still has drops enabled)
-
-Use a small Value 15-30 Minutes. 
-If a streamer goes offline it will still continue to watch the streamer this time.</value>
-  </data>
   <metadata name="Timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="Timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>106, 17</value>
+  </metadata>
+  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>195, 17</value>
   </metadata>
   <data name="tokeninput.ToolTip" xml:space="preserve">
     <value>Type in your Twitch "auth-token".
@@ -142,9 +135,6 @@ Press on the "Application" tab and search on the left bar for "Cookies". You wil
 Click on the twitch.tv cookie and search in the Filter input for "auth-token"
 You will see your "auth-token" under "Value". Copy that Value and input it in this field.</value>
   </data>
-  <metadata name="Timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>106, 17</value>
-  </metadata>
   <data name="tokenlogin.ToolTip" xml:space="preserve">
     <value>Type in your Twitch "auth-token".
 
@@ -155,39 +145,12 @@ Click on the twitch.tv cookie and search in the Filter input for "auth-token"
 You will see your "auth-token" under "Value". Copy that Value and input it in this field.
 </value>
   </data>
-  <data name="proxyinput.ToolTip" xml:space="preserve">
-    <value>If you have been IP banned by Twitch you can use a Proxy to bypass it
-
-Input is Proxy:Port (example: 192.168.2.1:8080)
-
-INFORMATION: YOU DO NOT NEED PROXIES FOR MULTIPLE ACCOUNTS. YOU CAN GET UNLIMITED DROPS ON THE SAME IP!
-</value>
-  </data>
-  <data name="proxycheckbox.ToolTip" xml:space="preserve">
-    <value>If you have been IP banned by Twitch you can use a Proxy to bypass it
-
-Input is Proxy:Port (example: 192.168.2.1:8080)
-
-INFORMATION: YOU DO NOT NEED PROXIES FOR MULTIPLE ACCOUNTS. YOU CAN GET UNLIMITED DROPS ON THE SAME IP!</value>
-  </data>
-  <data name="Label7.ToolTip" xml:space="preserve">
-    <value>Some users complained that the bot crashes if you start another account.
-This happens because of my bad coding not using invokes with delegates on crossthreadcalls.
-
-It can be prevented with Backgroundworkers. 
-This method is a bit slower but can prevent crashes.
-
-BackgroundWorker handles long-running tasks. 
-It does not freeze the entire program as this task executes. 
-It enables a simple multithreaded architecture for VB.NET programs.</value>
-  </data>
-  <data name="Watchstreamer.ToolTip" xml:space="preserve">
+  <data name="Label11.ToolTip" xml:space="preserve">
     <value>It will watch Streamer X if he is online and has Valorant Drops enabled.
 
 Otherwise it will search for other streamers.
 
-IMPORTANT: NAME IS CASE SENSITIVE. Please type example: "CDNThe3rd" instead of example: "cdnthe3rd" for the name
-</value>
+IMPORTANT: NAME IS CASE SENSITIVE. Please type example: "CDNThe3rd" instead of example: "cdnthe3rd" for the name</value>
   </data>
   <data name="Streamerinput.ToolTip" xml:space="preserve">
     <value>It will watch Streamer X if he is online and has Valorant Drops enabled.
@@ -197,129 +160,38 @@ Otherwise it will search for other streamers.
 IMPORTANT: NAME IS CASE SENSITIVE. Please type example: "CDNThe3rd" instead of example: "cdnthe3rd" for the name
 </value>
   </data>
-  <data name="Label11.ToolTip" xml:space="preserve">
+  <data name="Watchstreamer.ToolTip" xml:space="preserve">
     <value>It will watch Streamer X if he is online and has Valorant Drops enabled.
 
 Otherwise it will search for other streamers.
 
-IMPORTANT: NAME IS CASE SENSITIVE. Please type example: "CDNThe3rd" instead of example: "cdnthe3rd" for the name</value>
+IMPORTANT: NAME IS CASE SENSITIVE. Please type example: "CDNThe3rd" instead of example: "cdnthe3rd" for the name
+</value>
   </data>
-  <metadata name="LineShape12.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>266, 398, 0, 143</value>
-  </metadata>
-  <metadata name="LineShape12.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>266, 398</value>
-  </metadata>
-  <metadata name="LineShape12.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 143</value>
-  </metadata>
-  <metadata name="LineShape11.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 542, 669, 0</value>
-  </metadata>
-  <metadata name="LineShape11.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 542</value>
-  </metadata>
-  <metadata name="LineShape11.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>669, 0</value>
-  </metadata>
-  <metadata name="LineShape1.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>311, 351, 0, 46</value>
-  </metadata>
-  <metadata name="LineShape1.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>311, 351</value>
-  </metadata>
-  <metadata name="LineShape1.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 46</value>
-  </metadata>
-  <metadata name="LineShape2.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 397, 666, 0</value>
-  </metadata>
-  <metadata name="LineShape2.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 397</value>
-  </metadata>
-  <metadata name="LineShape2.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>666, 0</value>
-  </metadata>
-  <metadata name="LineShape10.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>461, 210, 0, 140</value>
-  </metadata>
-  <metadata name="LineShape10.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>461, 210</value>
-  </metadata>
-  <metadata name="LineShape10.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 140</value>
-  </metadata>
-  <metadata name="LineShape9.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 351, 668, 0</value>
-  </metadata>
-  <metadata name="LineShape9.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 351</value>
-  </metadata>
-  <metadata name="LineShape9.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>668, 0</value>
-  </metadata>
-  <metadata name="LineShape8.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>461, 97, 0, 114</value>
-  </metadata>
-  <metadata name="LineShape8.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>461, 97</value>
-  </metadata>
-  <metadata name="LineShape8.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 114</value>
-  </metadata>
-  <metadata name="LineShape7.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 212, 667, 0</value>
-  </metadata>
-  <metadata name="LineShape7.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 212</value>
-  </metadata>
-  <metadata name="LineShape7.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>667, 0</value>
-  </metadata>
-  <metadata name="LineShape6.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>305, 40, 0, 56</value>
-  </metadata>
-  <metadata name="LineShape6.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>305, 40</value>
-  </metadata>
-  <metadata name="LineShape6.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 56</value>
-  </metadata>
-  <metadata name="LineShape5.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 96, 667, 0</value>
-  </metadata>
-  <metadata name="LineShape5.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 96</value>
-  </metadata>
-  <metadata name="LineShape5.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>667, 0</value>
-  </metadata>
-  <metadata name="LineShape4.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, -1, 0, 41</value>
-  </metadata>
-  <metadata name="LineShape4.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, -1</value>
-  </metadata>
-  <metadata name="LineShape4.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 41</value>
-  </metadata>
-  <metadata name="LineShape3.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 40, 668, 0</value>
-  </metadata>
-  <metadata name="LineShape3.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 40</value>
-  </metadata>
-  <metadata name="LineShape3.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>668, 0</value>
-  </metadata>
+  <data name="Label4.ToolTip" xml:space="preserve">
+    <value>It will watch a Streamer for X Minutes until it searches a new one.
+(It won't actually search another Streamer if the current one is still active and still has drops enabled)
+
+Use a small Value 15-30 Minutes. 
+If a streamer goes offline it will still continue to watch the streamer this time.</value>
+  </data>
+  <data name="proxycheckbox.ToolTip" xml:space="preserve">
+    <value>If you have been IP banned by Twitch you can use a Proxy to bypass it
+
+Input is Proxy:Port (example: 192.168.2.1:8080)
+
+INFORMATION: YOU DO NOT NEED PROXIES FOR MULTIPLE ACCOUNTS. YOU CAN GET UNLIMITED DROPS ON THE SAME IP!</value>
+  </data>
+  <data name="proxyinput.ToolTip" xml:space="preserve">
+    <value>If you have been IP banned by Twitch you can use a Proxy to bypass it
+
+Input is Proxy:Port (example: 192.168.2.1:8080)
+
+INFORMATION: YOU DO NOT NEED PROXIES FOR MULTIPLE ACCOUNTS. YOU CAN GET UNLIMITED DROPS ON THE SAME IP!
+</value>
+  </data>
   <metadata name="BackgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>294, 17</value>
-  </metadata>
-  <metadata name="Timer3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>457, 17</value>
-  </metadata>
-  <metadata name="Timer4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>546, 17</value>
   </metadata>
   <metadata name="BackgroundWorker2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>635, 17</value>
