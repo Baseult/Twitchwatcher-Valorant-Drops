@@ -96,7 +96,7 @@ Public Class Form1
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls And SecurityProtocolType.Tls11 And SecurityProtocolType.Tls12 And SecurityProtocolType.Ssl3 'using outdated securityprotocolsfor https even it is http - even more dumb 
                 Dim ProgramVersion As String = vs.DownloadString(New Uri("http://baseult.com/twitchbot/version.txt"))
-                Dim LocalVersion As String = "1.0.5"
+                Dim LocalVersion As String = "1.0.6"
 
                 If ProgramVersion = LocalVersion Then
                     Chatshow("Running latest Version: " & LocalVersion)
