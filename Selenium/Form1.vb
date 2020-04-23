@@ -41,6 +41,8 @@ Public Class Form1
     Private Follow As Boolean = False
     Private Chat As Boolean = False
     Private chromeactive As Boolean = False
+    Private driverchrome As ChromeDriver
+    Private driverfox As FirefoxDriver
 
     Const THREAD_BASE_PRIORITY_IDLE = -15       'Dont need all of them but will leave them here for further coding
     Const THREAD_BASE_PRIORITY_LOWRT = 15
@@ -245,8 +247,10 @@ Restart:
 
 
         Dim driver As ChromeDriver = New ChromeDriver(driverService, options)
+        driverchrome = driver
 
         driver.Navigate().GoToUrl("https://twitch.tv/login")
+
 
         Chatshow("Navigate to Twitch Login")
 
@@ -415,6 +419,18 @@ watching:
         Wait(10000)
 
         Dim Streamername As String
+
+        Try
+            driver.FindElement(By.CssSelector("button[data-a-target='consent-banner-accept']")).Click()
+            Chatshow("Accepted Cookies")
+        Catch
+            Try
+                driver.FindElement(By.XPath("//*[@data-a-target='consent-banner-accept']")).Click()
+                Chatshow("Accepted Cookies")
+            Catch
+
+            End Try
+        End Try
 
         If Watchstreamer.Checked = True Then
             Chatshow("Searching for Streamer: " & Streamerinput.Text)
@@ -712,6 +728,7 @@ Restart:
 
 
         Dim driver As FirefoxDriver = New FirefoxDriver(driverService, options)
+        driverfox = driver
 
         driver.Navigate().GoToUrl("https://twitch.tv/login")
 
@@ -1133,146 +1150,286 @@ Ignoremore:
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
 
-        Dim driver As ChromeDriver
+        If chromeactive = True Then
+            html_source = driverchrome.PageSource
 
-        html_source = driver.PageSource
+            If html_source.Contains("<p class=""tw-strong"">Subscribers-Only Chat</p>") Then
+                Chatshow("Streamchat is Subscribers Only - Won't write in Chat")
+            Else
 
-        If html_source.Contains("<p class=""tw-strong"">Subscribers-Only Chat</p>") Then
-            Chatshow("Streamchat is Subscribers Only - Won't write in Chat")
+                If Text1 = True Then
+                    Try
+                        driverchrome.FindElement(By.ClassName("chat-input__textarea")).Click()
+                        Chatshow("Click Textarea")
+                        Wait(2000)
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                            Chatshow("Click Textarea")
+                            Wait(2000)
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
+                    End Try
+
+                    Try
+                        driverchrome.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
+                        Chatshow("Click Okay")
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                            Chatshow("Click Okay")
+                        Catch
+                            Try
+                                driverchrome.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                                Chatshow("Click Okay")
+                            Catch
+                                Try
+                                    driverchrome.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                    Chatshow("Click Okay")
+                                Catch
+                                    Chatshow("Something went wrong while trying to write in Chat")
+                                End Try
+                            End Try
+                        End Try
+                    End Try
+
+                    Try
+                        driverchrome.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput.Text)
+                        Chatshow("Write")
+                        Wait(2000)
+                        driverchrome.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
+                        Chatshow("Writing in Chat")
+                        Text1 = False
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput.Text)
+                            Chatshow("Write")
+                            Wait(2000)
+                            driverchrome.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                            Chatshow("Writing in Chat")
+                            Text1 = False
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
+                    End Try
+
+                ElseIf Text1 = False Then
+
+                    Try
+                        driverchrome.FindElement(By.ClassName("chat-input__textarea")).Click()
+                        Chatshow("Click Textarea")
+                        Wait(2000)
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                            Chatshow("Click Textarea")
+                            Wait(2000)
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
+                    End Try
+
+                    Try
+                        driverchrome.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
+                        Chatshow("Click Okay")
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                            Chatshow("Click Okay")
+                        Catch
+                            Try
+                                driverchrome.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                                Chatshow("Click Okay")
+                            Catch
+                                Try
+                                    driverchrome.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                    Chatshow("Click Okay")
+                                Catch
+                                    Chatshow("Something went wrong while trying to write in Chat")
+                                End Try
+                            End Try
+                        End Try
+                    End Try
+
+                    Try
+                        driverchrome.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput2.Text)
+                        Chatshow("Write")
+                        Wait(2000)
+                        driverchrome.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
+                        Chatshow("Writing in Chat")
+                        Text1 = False
+                    Catch
+                        Try
+                            driverchrome.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput2.Text)
+                            Chatshow("Write")
+                            Wait(2000)
+                            driverchrome.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                            Chatshow("Writing in Chat")
+                            Text1 = False
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
+                    End Try
+                End If
+            End If
         Else
+            html_source = driverfox.PageSource
 
-            If Text1 = True Then
-                Try
-                    driver.FindElement(By.ClassName("chat-input__textarea")).Click()
-                    Chatshow("Click Textarea")
-                    Wait(2000)
-                Catch
+            If html_source.Contains("<p class=""tw-strong"">Subscribers-Only Chat</p>") Then
+                Chatshow("Streamchat is Subscribers Only - Won't write in Chat")
+            Else
+
+                If Text1 = True Then
                     Try
-                        driver.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                        driverfox.FindElement(By.ClassName("chat-input__textarea")).Click()
                         Chatshow("Click Textarea")
                         Wait(2000)
                     Catch
-                        Chatshow("Something went wrong while trying to write in Chat")
+                        Try
+                            driverfox.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                            Chatshow("Click Textarea")
+                            Wait(2000)
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
                     End Try
-                End Try
 
-                Try
-                    driver.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
-                    Chatshow("Click Okay")
-                Catch
                     Try
-                        driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                        driverfox.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
                         Chatshow("Click Okay")
                     Catch
                         Try
-                            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                            driverfox.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
                             Chatshow("Click Okay")
                         Catch
                             Try
-                                driver.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                driverfox.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
                                 Chatshow("Click Okay")
                             Catch
-                                Chatshow("Something went wrong while trying to write in Chat")
+                                Try
+                                    driverfox.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                    Chatshow("Click Okay")
+                                Catch
+                                    Chatshow("Something went wrong while trying to write in Chat")
+                                End Try
                             End Try
                         End Try
                     End Try
-                End Try
 
-                Try
-                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput.Text)
-                    Chatshow("Write")
-                    Wait(2000)
-                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
-                    Chatshow("Writing in Chat")
-                    Text1 = False
-                Catch
                     Try
-                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput.Text)
+                        driverfox.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput.Text)
                         Chatshow("Write")
                         Wait(2000)
-                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                        driverfox.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
                         Chatshow("Writing in Chat")
                         Text1 = False
                     Catch
-                        Chatshow("Something went wrong while trying to write in Chat")
+                        Try
+                            driverfox.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput.Text)
+                            Chatshow("Write")
+                            Wait(2000)
+                            driverfox.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                            Chatshow("Writing in Chat")
+                            Text1 = False
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
                     End Try
-                End Try
 
-            ElseIf Text1 = False Then
+                ElseIf Text1 = False Then
 
-                Try
-                    driver.FindElement(By.ClassName("chat-input__textarea")).Click()
-                    Chatshow("Click Textarea")
-                    Wait(2000)
-                Catch
                     Try
-                        driver.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                        driverfox.FindElement(By.ClassName("chat-input__textarea")).Click()
                         Chatshow("Click Textarea")
                         Wait(2000)
                     Catch
-                        Chatshow("Something went wrong while trying to write in Chat")
+                        Try
+                            driverfox.FindElement(By.XPath("//*[contains(@src,'Send a message')]"))
+                            Chatshow("Click Textarea")
+                            Wait(2000)
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
                     End Try
-                End Try
 
-                Try
-                    driver.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
-                    Chatshow("Click Okay")
-                Catch
                     Try
-                        driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
+                        driverfox.FindElement(By.CssSelector("chat-rules-ok-button")).Click()
                         Chatshow("Click Okay")
                     Catch
                         Try
-                            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
+                            driverfox.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/section/div/div[5]/div[1]/div/div[2]/div[2]/button")).Click()
                             Chatshow("Click Okay")
                         Catch
                             Try
-                                driver.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                driverfox.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[4]/div[1]/div/div[2]/div[2]/button")).Click()
                                 Chatshow("Click Okay")
                             Catch
-                                Chatshow("Something went wrong while trying to write in Chat")
+                                Try
+                                    driverfox.FindElement(By.XPath("//p[text()='Okay, Got It!']")).Click()
+                                    Chatshow("Click Okay")
+                                Catch
+                                    Chatshow("Something went wrong while trying to write in Chat")
+                                End Try
                             End Try
                         End Try
                     End Try
-                End Try
 
-                Try
-                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput2.Text)
-                    Chatshow("Write")
-                    Wait(2000)
-                    driver.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
-                    Chatshow("Writing in Chat")
-                    Text1 = False
-                Catch
                     Try
-                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput2.Text)
+                        driverfox.FindElement(By.ClassName("tw-textarea")).SendKeys(Chatinput2.Text)
                         Chatshow("Write")
                         Wait(2000)
-                        driver.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                        driverfox.FindElement(By.ClassName("tw-textarea")).SendKeys(Keys.Enter)
                         Chatshow("Writing in Chat")
                         Text1 = False
                     Catch
-                        Chatshow("Something went wrong while trying to write in Chat")
+                        Try
+                            driverfox.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Chatinput2.Text)
+                            Chatshow("Write")
+                            Wait(2000)
+                            driverfox.FindElement(By.XPath("//*[text()='Send a message']")).SendKeys(Keys.Enter)
+                            Chatshow("Writing in Chat")
+                            Text1 = False
+                        Catch
+                            Chatshow("Something went wrong while trying to write in Chat")
+                        End Try
                     End Try
-                End Try
+                End If
             End If
         End If
+
+
 
     End Sub
 
     Private Sub Timer5_Tick(sender As Object, e As EventArgs) Handles Timer5.Tick
-        Dim driver As ChromeDriver
-        Try
-            driver.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
-            Chatshow("Claimed Channelpoints")
-        Catch
+
+        If chromeactive = True Then
             Try
-                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div/div/button")).Click()
+                driverchrome.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
                 Chatshow("Claimed Channelpoints")
             Catch
-            End Try
+                Try
+                    driverchrome.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div/div/button")).Click()
+                    Chatshow("Claimed Channelpoints")
+                Catch
+                End Try
 
-        End Try
+            End Try
+        Else
+            Try
+                driverfox.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
+                Chatshow("Claimed Channelpoints")
+            Catch
+                Try
+                    driverfox.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div/div/button")).Click()
+                    Chatshow("Claimed Channelpoints")
+                Catch
+                End Try
+
+            End Try
+        End If
+
     End Sub
 
     '################################################################################ Other Stuff ################################################################################
@@ -1318,7 +1475,6 @@ Ignoremore:
     End Sub
 
     Private Sub Stopinstance()
-        Dim driver As ChromeDriver
         Dim x() As Process
         x = Process.GetProcesses
 
@@ -1342,8 +1498,13 @@ Ignoremore:
         End Try
 
         Try
-            driver.Quit()
+            driverfox.Quit()
         Catch
+            Try
+                driverchrome.Quit()
+            Catch
+
+            End Try
         End Try
 
     End Sub
