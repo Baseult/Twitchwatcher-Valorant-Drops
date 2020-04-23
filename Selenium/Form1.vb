@@ -41,8 +41,6 @@ Public Class Form1
     Private Follow As Boolean = False
     Private Chat As Boolean = False
     Private chromeactive As Boolean = False
-    Public driverx
-    Public driver
 
     Const THREAD_BASE_PRIORITY_IDLE = -15       'Dont need all of them but will leave them here for further coding
     Const THREAD_BASE_PRIORITY_LOWRT = 15
@@ -94,7 +92,7 @@ Public Class Form1
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls And SecurityProtocolType.Tls11 And SecurityProtocolType.Tls12 And SecurityProtocolType.Ssl3 'using outdated securityprotocolsfor https even it is http - even more dumb 
                 Dim ProgramVersion As String = vs.DownloadString(New Uri("http://baseult.com/twitchbot/version.txt"))
-                Dim LocalVersion As String = "1.0.7"
+                Dim LocalVersion As String = "1.0.8"
 
                 If ProgramVersion = LocalVersion Then
                     Chatshow("Running latest Version: " & LocalVersion)
@@ -109,17 +107,21 @@ Public Class Form1
     End Sub
 
     Private Sub Newinstance(sender As Object, e As EventArgs) Handles Button2.Click
-        If Crossthread = True Then                      'If Crossthread enabled start new Task in crossthread
+        If Not Crossthread = True Then                      'If Crossthread enabled start new Task in crossthread
             If prioritymode.Checked = True Then
-                Chatshow("Started using Crossthread with low priority")
-                do1 = New System.Threading.Thread(AddressOf Startbot) With {
-               .Priority = ThreadPriority.Lowest
-           }
-                do1.Start()
-            Else
-                Chatshow("Started using Crossthread with normal priority")
-                do1 = New System.Threading.Thread(AddressOf Startbot) 'multithreading For more accounts
-                do1.Start()
+                If chromeactive = True Then
+                    Chatshow("Started using Crossthread with low priority")
+                    do1 = New System.Threading.Thread(AddressOf Startbot) With {
+           .Priority = ThreadPriority.Lowest
+       }
+                    do1.Start()
+                Else
+                    Chatshow("Started using Crossthread with low priority")
+                    do1 = New System.Threading.Thread(AddressOf Startbot2) With {
+           .Priority = ThreadPriority.Lowest
+       }
+                    do1.Start()
+                End If
             End If
         Else                                            'Else start Backgroundworker
             Try
@@ -149,11 +151,20 @@ Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If prioritymode.Checked = True Then
-            Chatshow("Started using Crossthread with low priority")
-            do1 = New System.Threading.Thread(AddressOf Startbot) With {
+            If chromeactive = True Then
+                Chatshow("Started using Crossthread with low priority")
+                do1 = New System.Threading.Thread(AddressOf Startbot) With {
            .Priority = ThreadPriority.Lowest
        }
-            do1.Start()
+                do1.Start()
+            Else
+                Chatshow("Started using Crossthread with low priority")
+                do1 = New System.Threading.Thread(AddressOf Startbot2) With {
+           .Priority = ThreadPriority.Lowest
+       }
+                do1.Start()
+            End If
+
         Else
             Try
                 Chatshow("Started using Backgroundworker")
@@ -162,17 +173,25 @@ Public Class Form1
                 MessageBox.Show("If you want to bot multiple Accounts please use the ""Start another Account"" Button") 'Do not use more than 5 Backgroundworkers (high cpu)
             End Try
         End If
+
     End Sub
 
     Public Sub Startbot()
 
 Restart:
 
+        Dim Token As String
+
+        Token = tokeninput.Text
         '################################################################################ Browser Options ################################################################################
 
 
         Dim options As ChromeOptions = New ChromeOptions
         Dim driverService = ChromeDriverService.CreateDefaultService()
+
+        If chromeactive = True Then
+            options.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36")
+        End If
 
         Dim optionsx As FirefoxOptions = New FirefoxOptions
         Dim driverServicex = FirefoxDriverService.CreateDefaultService
@@ -220,25 +239,12 @@ Restart:
             Chatshow("Starting Browser for: " & Namebox.Text)
         End If
 
+
+
         '################################################################################ Start Browser ################################################################################
 
 
-        If chromeactive = True Then
-            Try
-                Dim driverx As ChromeDriver = New ChromeDriver(driverService, options)
-                driver = driverx
-            Catch
-                MessageBox.Show("Your Chromeversion is outdated. Please update your Google Chrome!")
-            End Try
-        Else
-            Try
-                Dim driverx As FirefoxDriver = New FirefoxDriver(driverServicex, optionsx)
-                driver = driverx
-            Catch
-                MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
-            End Try
-
-        End If
+        Dim driver As ChromeDriver = New ChromeDriver(driverService, options)
 
         driver.Navigate().GoToUrl("https://twitch.tv/login")
 
@@ -287,7 +293,474 @@ Restart:
             Chatshow("Login Start")
 
             If tokenlogin.Checked = True Then
-                Dim Cookie2 = New OpenQA.Selenium.Cookie("auth-token", tokeninput.Text, ".twitch.tv", "/", "2022-10-16T17:36:40.000Z") 'Cookie for auth-token login
+                Dim Cookie2 = New OpenQA.Selenium.Cookie("auth-token", Token, ".twitch.tv", "/", "2022-10-16T17:36:40.000Z") 'Cookie for auth-token login
+                Chatshow("Put in Cookies - Token")
+                Wait(2000)
+
+                driver.Manage.Cookies.AddCookie(Cookie2)
+                Chatshow("Manage Cookie")
+                Wait(2000)
+
+                driver.Navigate.Refresh()
+                Chatshow("Refresh")
+                Wait(10000)
+            Else
+
+                Try
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[1]/div/div[2]/input")).SendKeys(Namebox.Text)
+                    Chatshow("Put in Username: " & Namebox.Text)
+                Catch
+                    Chatshow("Something went wrong with the Username Input")
+                End Try
+                Wait(2000)
+                Try
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[2]/div/div[1]/div[2]/div[1]/input")).SendKeys(Passbox.Text)
+                    Chatshow("Put in Password: ********")
+                Catch
+                    Chatshow("Something went wrong with the Password Input")
+                End Try
+                Wait(2000)
+                Try
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[3]/button")).Click()
+                    Chatshow("Pressing Login Button")
+                Catch
+                    Try
+                        driver.FindElement(By.XPath("//*[text()='Log In']"))
+                    Catch
+                        Chatshow("Something went wrong with pressing the Login Button")
+                    End Try
+                End Try
+            End If
+        Else
+            Waitforcheck = True  'Otherwise if session stored login may not needed
+        End If
+
+Recheck:
+
+        Wait(10000)
+
+        Dim title As String = driver.Title
+        Try
+            If title = "Anmelden - Twitch" Or title = "Log In - Twitch" Then
+                Chatshow("Waiting for authentication - Please insert the Authcode or verify the captcha!")
+                Waitforcheck = False
+                If hiddenchrome = True Then
+                    MessageBox.Show("Manual human verification is needed!" & "Please restart Chrome in visible mode.")
+                    driver.Quit()
+                End If
+                GoTo Recheck
+
+            Else
+                Chatshow("Logged in!")
+                Button2.Enabled = True
+            End If
+        Catch
+            Chatshow("Something went wrong while checking the Chrome Title")
+        End Try
+
+        '################################################################################ Change Language2 ################################################################################
+
+        Try
+            Chatshow("Changing language to english - please wait")
+            Dim Cookie3 = New OpenQA.Selenium.Cookie("language", "en", ".twitch.tv", "/", "2022-10-16T17:36:40.000Z")
+            Wait(2000)
+            driver.Manage.Cookies.AddCookie(Cookie3)
+            Wait(2000)
+            driver.Navigate.Refresh()
+            Chatshow("Changed language")
+        Catch
+            Chatshow("Something went wrong trying to change language to English")
+        End Try
+
+
+watching:
+
+        '################################################################################ Check for Drop ################################################################################
+
+        subsonly = False 'resets subsonly chat detection
+
+        Wait(10000)
+
+        If Checkdrop.Checked = True Then
+            Chatshow("Navigate to Twitch Inventory")
+            driver.Navigate().GoToUrl("https://www.twitch.tv/inventory")
+
+            Wait(10000)
+
+            Chatshow("Searching for Valorant Drop")
+            html_source = driver.PageSource
+
+            Wait(5000)
+
+            If html_source.Contains("<p class=""tw-font-size-5 tw-semibold"" data-test-selector=""drops-list__drop-name"">VALORANT</p>") Then
+                Dropfound.Text = "True"
+                Wait(2000)
+                Chatshow("Valorant Drop found. Congratulations!")
+                Wait(2000)
+                MessageBox.Show("Valorant Drop found. Congratulations!")
+            Else
+                Chatshow("No Valorant Drop yet. Continue!")
+                Dropfound.Text = "False"
+            End If
+
+            Wait(2000)
+        End If
+
+
+        '################################################################################ Search Streams ################################################################################
+
+        Chatshow("Searching for Drop Active Streamers")
+        driver.Navigate().GoToUrl("https://www.twitch.tv/directory/game/VALORANT?tl=c2542d6d-cd10-4532-919b-3d19f30a768b")
+
+        Wait(10000)
+
+        Dim Streamername As String
+
+        If Watchstreamer.Checked = True Then
+            Chatshow("Searching for Streamer: " & Streamerinput.Text)
+            Try
+                driver.FindElement(By.XPath("//*[text()='" & Streamerinput.Text & "']")).Click()
+                Chatshow("Found Streamer " & Streamerinput.Text)
+                Wait(10000)
+                Try
+                    driver.FindElement(By.CssSelector("a[data-a-target='home-channel-header-item']")).Click()
+                Catch
+                    Try
+                        driver.FindElement(By.XPath("//div[text()='Home']")).Click()
+                    Catch
+                        Try
+                            driver.Navigate().GoToUrl("https://www.twitch.tv/" & Streamerinput.Text)
+                        Catch
+                            Chatshow("Something went wrong trying to find Home Button")
+                        End Try
+                    End Try
+                End Try
+                Wait(10000)
+                Chatshow("Watching Streamer: " & Streamerinput.Text)
+                Timertext.Text = Waitscount
+                Timertext.Visible = True
+                Timertext.Enabled = True
+                Timer1.Enabled = True
+                Remainingtime.Visible = True
+                Streamwatch = False  'Custom Streamer Found then False
+            Catch
+                Chatshow("Could not find Streamer: " & Streamerinput.Text)
+                Chatshow("Searching other Streamers")
+                driver.Navigate().GoToUrl("https://www.twitch.tv/directory/game/VALORANT?tl=c2542d6d-cd10-4532-919b-3d19f30a768b")
+                Wait(10000)
+                Streamwatch = True 'No custom streamer Found then True
+            End Try
+        End If
+
+SearchChannel:
+
+        Wait(2000)
+
+        If Streamwatch = True Then  'If no custom streamer found then do this...
+            Try
+                Dim Streamer = driver.FindElement(By.CssSelector("a[data-a-target='preview-card-channel-link']"))
+                Streamername = Streamer.Text
+                Streamer.Click()
+            Catch
+                Chatshow("Something went wrong while searching for Streams")
+                GoTo SearchChannel
+            End Try
+
+            Timertext.Text = Waitscount
+            Timertext.Enabled = True
+            Timertext.Visible = True
+            Timer1.Enabled = True
+            Remainingtime.Visible = True
+
+            Chatshow("Found a Streamer. Watching for: " & Waits & " Seconds. Watching Stream: " & Streamername)
+
+            Wait(10000)
+
+            Try
+                driver.FindElement(By.CssSelector("a[data-a-target='home-channel-header-item']")).Click()
+            Catch
+                Chatshow("Something went wrong while Searching for Home Button")
+                driver.Navigate().GoToUrl("https://www.twitch.tv/" & Streamername)
+            End Try
+        End If
+
+        '################################################################################ Detect Maturecontent Warning ################################################################################
+
+        Chatshow("checking for mature content popup - please wait")
+
+        Wait(10000)
+
+        Try
+            driver.FindElement(By.XPath("//*[@id=""root""]/div/div[2]/div/main/div[2]/div[3]/div/div/div[2]/div[2]/div[2]/div/div/div/div[9]/div/div[3]/button")).Click()
+            Chatshow("Mature content warning detected- pressing okay")
+        Catch
+            Try
+                driver.FindElement(By.XPath("//*[@data-a-target='player-overlay-mature-accept']")).Click()
+                Chatshow("Mature content warning detected- pressing okay")
+            Catch ex As Exception
+            End Try
+        End Try
+
+Ignoreit:
+
+        Wait(2000)
+
+        '################################################################################ Custom Audio ################################################################################
+
+        If customaudio.Checked = True Then
+            Try
+                video = driver.FindElement(By.CssSelector("video"))
+
+                Chatshow("Changed custom volume")
+                Wait(2000)
+            Catch
+                Chatshow("Failed to change custom volume")
+            End Try
+        End If
+
+        '################################################################################ Streamquality ################################################################################
+
+        If Streamquality = True Then
+            Dim body As IWebElement
+            Try
+                body = driver.FindElement(By.CssSelector("button[data-a-target='player-play-pause-button']"))   'Pause the video else it cant change settings why so ever
+                body.SendKeys(Keys.Space)
+            Catch
+                Chatshow("Something went wrong searching the pause button")
+                GoTo Ignorenext
+            End Try
+
+            Wait(2000)
+
+            Try
+                driver.FindElement(By.XPath("//*[@data-a-target='player-settings-button']")).Click()
+            Catch
+                Chatshow("Something went wrong trying to search Settings Button")
+                GoTo Ignorenext
+            End Try
+
+            Wait(2000)
+
+
+            Try
+                driver.FindElement(By.CssSelector("button[data-a-target='player-settings-menu-item-quality']")).Click()
+            Catch
+                Chatshow("Something went wrong trying to find Quality Button")
+                GoTo Ignorenext
+            End Try
+
+            Wait(2000)
+
+            Try
+                driver.FindElement(By.XPath("//*[text()='160p']")).Click()
+                Chatshow("Changed Streamquality to low")
+                Wait(1000)
+            Catch
+                Chatshow("Something went wrong trying to set Streamquality to low")
+                GoTo Ignorenext
+            End Try
+
+
+            Wait(3000)
+
+            Try
+                body = driver.FindElement(By.CssSelector("button[data-a-target='player-play-pause-button']"))
+                body.SendKeys(Keys.Space)
+            Catch
+                driver.Navigate.Refresh()
+                Wait(10000)
+                GoTo Ignorenext
+            End Try
+        End If
+
+Ignorenext:
+
+        Wait(2000)
+
+        '################################################################################ Hide Streamchat ################################################################################
+
+        If Streamchathide = True Then
+            Try
+                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div/section/div/div[5]/div[3]/div[2]/div[2]/div[2]/div/div/div[1]/button")).Click()
+                Wait(2000)
+            Catch
+                Try
+                    driver.FindElement(By.XPath("//*[@data-a-target='chat-settings']")).Click()
+                    Wait(2000)
+                Catch
+                    Chatshow("Something went wrong trying To find Chat Settings")
+                    GoTo Ignoremore
+                End Try
+            End Try
+
+            Wait(2000)
+
+            Try
+                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[1]/div/div[2]/section/div/div[5]/div[3]/div[2]/div[2]/div[2]/div/div[2]/div/div/div[2]/div[3]/div/div/div/div[3]/div[5]/button")).Click()
+                Wait(1000)
+            Catch
+                Try
+                    driver.FindElement(By.XPath("//*[contains(text(), 'Hide Chat')]")).Click()
+                    Wait(1000)
+                Catch
+                    Chatshow("Something went wrong trying to find hide Chat Button")
+                    GoTo Ignoremore
+                End Try
+            End Try
+
+            Try
+                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div[2]")).Click()
+                Chatshow("Closed Streamchat")
+                Wait(1000)
+            Catch
+                Chatshow("Something went wrong while trying to close Streamchat")
+            End Try
+        End If
+
+Ignoremore:
+
+        '################################################################################ Follow Streamer ################################################################################
+
+        If Follow = True Then
+            Try
+                driver.FindElement(By.XPath("//*[@id=""root""]/div/div[2]/div/main/div[1]/div/div[2]/div/div[1]/div[3]/div[1]/div/div/div[1]")).Click()
+                Chatshow("Followed the Streamer: " & Streamername & " to be able to write in Chat")
+            Catch
+                Chatshow("Something went wrong while trying to follow a Streamer")
+            End Try
+        End If
+
+        '################################################################################ Start Writechat Timer ################################################################################
+
+        If Chat = True Then
+            Timer2.Enabled = True
+        End If
+
+        If Claimpoints.Checked = True Then
+            Timer5.Enabled = True
+        End If
+
+        Wait(Waitms)
+
+        Timer2.Enabled = False
+        Timer5.Enabled = False
+
+        Wait(2000)
+
+        GoTo watching
+
+    End Sub
+
+    Public Sub Startbot2()
+
+Restart:
+        Dim Token As String
+
+        Token = tokeninput.Text
+        '################################################################################ Browser Options ################################################################################
+
+
+        Dim options As FirefoxOptions = New FirefoxOptions
+        Dim driverService = FirefoxDriverService.CreateDefaultService
+
+
+        'WORK IN PROGRESS! Firefox -
+        '
+        'Else
+        '    Try
+        '        Dim optionsx As FirefoxOptions = New FirefoxOptions
+        '        Dim driverServicex = FirefoxDriverService.CreateDefaultService()
+        '        optionsx = optionsx
+        '        DriverService = driverServicex
+        '    Catch
+        '        MessageBox.Show("Your Firefoxversion is outdated. Please update your Google Chrome!")
+        '    End Try
+
+
+
+        If chromehide.Checked = True Then
+            options.AddArgument("headless")
+            hiddenchrome = True
+        Else
+            hiddenchrome = False
+            If cookiessave.Checked = True Then
+                options.AddArguments("user-data-dir=/profile")     'Will only save cookies in nonheadless mode otherwise it crashes
+            End If
+        End If
+
+        If proxycheckbox.Checked = True Then
+            options.AddArguments("--proxy-server=" & proxyinput.Text)
+        End If
+
+        If muteaudio.Checked = True Then
+            options.AddArgument("--mute-audio")
+        End If
+
+        If commandhide.Checked = True Then
+            driverService.HideCommandPromptWindow = True
+        End If
+
+        If tokenlogin.Checked = True Then
+            Chatshow("Starting Browser for: " & tokeninput.Text)
+        Else
+            Chatshow("Starting Browser for: " & Namebox.Text)
+        End If
+
+
+
+        '################################################################################ Start Browser ################################################################################
+
+
+        Dim driver As FirefoxDriver = New FirefoxDriver(driverService, options)
+
+        driver.Navigate().GoToUrl("https://twitch.tv/login")
+
+        Chatshow("Navigate to Twitch Login")
+
+
+        Dim d As Double
+
+        If Double.TryParse(Waitbox.Text, d) Then
+            Dim Waitmilliseconds = TimeSpan.FromMinutes(d).TotalMilliseconds.ToString("N0")
+            Dim Waitseconds = TimeSpan.FromMinutes(d).TotalSeconds.ToString("N0")
+            Waits = Waitseconds
+            Waitscount = Waitseconds
+            Waitms = Waitmilliseconds
+        End If
+
+        If Double.TryParse(Chatminute.Text, d) Then
+            Dim Waitmilliseconds = TimeSpan.FromMinutes(d).TotalMilliseconds.ToString("N0")
+            Waitmilis = Waitmilliseconds
+        End If
+
+        Timer2.Interval = Waitmilis
+        Wait(10000)
+
+        '################################################################################ Change Language1 ################################################################################
+
+        Try
+            Chatshow("Changing language to english - please wait")      'Changing language to detect English Twitch Login title
+            Dim Cookie3 = New OpenQA.Selenium.Cookie("language", "en", ".twitch.tv", "/", "2022-10-16T17:36:40.000Z")
+            Wait(2000)
+            driver.Manage.Cookies.AddCookie(Cookie3)
+            Wait(2000)
+            driver.Navigate.Refresh()
+            Chatshow("Changed language")
+        Catch
+            Chatshow("Something went wrong trying to change language to English")
+        End Try
+
+        Wait(10000)
+
+        Dim title1 As String = driver.Title
+
+        '################################################################################ Login Progress ################################################################################
+
+        If title1 = "Anmelden - Twitch" Or title1 = "Log In - Twitch" Then
+            Chatshow("Login Start")
+
+            If tokenlogin.Checked = True Then
+                Dim Cookie2 = New OpenQA.Selenium.Cookie("auth-token", Token, ".twitch.tv", "/", "2022-10-16T17:36:40.000Z") 'Cookie for auth-token login
                 Chatshow("Put in Cookies - Token")
                 Wait(2000)
 
@@ -500,7 +973,7 @@ Ignoreit:
         If customaudio.Checked = True Then
             Try
                 video = driver.FindElement(By.CssSelector("video"))
-                driver.ExecuteScript("arguments[0].volume = " & volinput.Text & ";", video)     ' Changes the video sound to a custom volume (1 = 100%, 0.1 = 10%, 0.01 = 1%)
+
                 Chatshow("Changed custom volume")
                 Wait(2000)
             Catch
@@ -660,6 +1133,8 @@ Ignoremore:
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
 
+        Dim driver As ChromeDriver
+
         html_source = driver.PageSource
 
         If html_source.Contains("<p class=""tw-strong"">Subscribers-Only Chat</p>") Then
@@ -786,6 +1261,7 @@ Ignoremore:
     End Sub
 
     Private Sub Timer5_Tick(sender As Object, e As EventArgs) Handles Timer5.Tick
+        Dim driver As ChromeDriver
         Try
             driver.FindElement(By.XPath("//*[text()='Click to claim a bonus!']")).Click()
             Chatshow("Claimed Channelpoints")
@@ -842,24 +1318,31 @@ Ignoremore:
     End Sub
 
     Private Sub Stopinstance()
+        Dim driver As ChromeDriver
+        Dim x() As Process
+        x = Process.GetProcesses
+
+        For Each p As Process In x
+            If p.MainWindowTitle.Contains("chrome") Or p.MainWindowTitle.Contains("twitch") Or p.MainWindowTitle.Contains("Firefox") Or p.MainWindowTitle.Contains("chromedriver") Then
+                Try
+                    p.Kill()
+                Catch
+                End Try
+            End If
+        Next
+
         Try
-            Dim x() As Process
-            x = Process.GetProcesses
+            BackgroundWorker1.CancelAsync()
+            BackgroundWorker2.CancelAsync()
+            BackgroundWorker3.CancelAsync()
+            BackgroundWorker4.CancelAsync()
+            BackgroundWorker5.CancelAsync()
+        Catch
+
+        End Try
+
+        Try
             driver.Quit()
-            For Each p As Process In x
-                If p.MainWindowTitle.Contains("chrome") Or p.MainWindowTitle.Contains("twitch") Or p.MainWindowTitle.Contains("Firefox") or p.MainWindowTitle.Contains("chromedriver") Then
-                    Try
-                        p.Kill()
-                    Catch
-                    End Try
-                Else
-                    BackgroundWorker1.CancelAsync()
-                    BackgroundWorker2.CancelAsync()
-                    BackgroundWorker3.CancelAsync()
-                    BackgroundWorker4.CancelAsync()
-                    BackgroundWorker5.CancelAsync()
-                End If
-            Next
         Catch
         End Try
 
@@ -964,23 +1447,43 @@ Ignoremore:
     '################################################################################ Backgroundworkers ################################################################################
 
     Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
-        Startbot()
+        If chromeactive = True Then
+            Startbot()
+        Else
+            Startbot2()
+        End If
     End Sub
 
     Private Sub BackgroundWorker2_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker2.DoWork
-        Startbot()
+        If chromeactive = True Then
+            Startbot()
+        Else
+            Startbot2()
+        End If
     End Sub
 
     Private Sub BackgroundWorker3_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker3.DoWork
-        Startbot()
+        If chromeactive = True Then
+            Startbot()
+        Else
+            Startbot2()
+        End If
     End Sub
 
     Private Sub BackgroundWorker4_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker4.DoWork
-        Startbot()
+        If chromeactive = True Then
+            Startbot()
+        Else
+            Startbot2()
+        End If
     End Sub
 
     Private Sub BackgroundWorker5_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker5.DoWork
-        Startbot()
+        If chromeactive = True Then
+            Startbot()
+        Else
+            Startbot2()
+        End If
     End Sub
 
     '################################################################################ Start With low CPU ################################################################################
