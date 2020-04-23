@@ -432,6 +432,8 @@ watching:
             End Try
         End Try
 
+        Wait(2000)
+
         If Watchstreamer.Checked = True Then
             Chatshow("Searching for Streamer: " & Streamerinput.Text)
             Try
