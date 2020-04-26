@@ -677,7 +677,7 @@ watching:
                 Timertext.Visible = True
                 Timertext.Enabled = True
                 Timer1.Enabled = True
-                Remainingtime.Visible = True
+                Watchertime.Visible = True
                 Streamwatch = False  'Custom Streamer Found then False
             Catch
                 Chatshow1("Could not find Streamer: " & Streamertext)
@@ -710,7 +710,7 @@ SearchChannel:
             Timertext.Enabled = True
             Timertext.Visible = True
             Timer1.Enabled = True
-            Remainingtime.Visible = True
+            Watchertime.Visible = True
 
             Chatshow1("Found a Streamer. Watching for: " & Waits & " Seconds. Watching Stream: " & Streamername)
 
@@ -1724,5 +1724,4 @@ Ignoremore:
         Waitforcheck = True
         Chatshow1("Will continue please Wait!")
     End Sub
-
 End Class
