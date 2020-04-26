@@ -1,5 +1,3 @@
-Join our Discord for help: https://discord.gg/eSmz482
-
 ## Twitchwatcher for Valorant Drops
 
 ![Twitchwatcher](https://i.ibb.co/PFG9tGp/image.png)
