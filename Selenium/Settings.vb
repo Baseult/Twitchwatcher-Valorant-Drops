@@ -208,15 +208,14 @@ Public Class Settings
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Power.Userinput = Namebox.Text
+        Power.Userinput = Usernametext.Text
         Power.waitminute = Chatminute.Text
         Power.Message1 = Chatinput.Text
         Power.Message2 = Chatinput2.Text
         Power.Waittime = Waitbox.Text
         Power.volume = volinput.Text
         Power.Streamertext = Streamerinput.Text
-        Power.Userinput = Namebox.Text
-        Power.Passinput = Passbox.Text
+        Power.Passinput = Passwordtext.Text
         Power.Proxyport = proxyinput.Text
         'cookiesave
         'Prioritymode
@@ -309,14 +308,6 @@ Public Class Settings
         End If
     End Sub
 
-    Private Sub Namebox_MaskInputRejected(sender As Object, e As MaskInputRejectedEventArgs) Handles Namebox.MaskInputRejected
-        Power.Userinput = Namebox.Text
-    End Sub
-
-    Private Sub Passbox_MaskInputRejected(sender As Object, e As MaskInputRejectedEventArgs) Handles Passbox.MaskInputRejected
-        Power.Passinput = Passbox.Text
-    End Sub
-
     Private Sub Proxycheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles proxycheckbox.CheckedChanged
         If proxycheckbox.Checked = True Then
             Power.Proxy = True
@@ -333,4 +324,11 @@ Public Class Settings
         Power.tokentext = tokeninput.Text
     End Sub
 
+    Private Sub Usernametext_TextChanged(sender As Object, e As EventArgs) Handles Usernametext.TextChanged
+        Power.Usernameinput = Usernametext.Text
+    End Sub
+
+    Private Sub Passwordtext_TextChanged(sender As Object, e As EventArgs) Handles Passwordtext.TextChanged
+        Power.Passwordinput = Passwordtext.Text
+    End Sub
 End Class

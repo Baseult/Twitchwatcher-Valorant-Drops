@@ -62,8 +62,6 @@ Partial Class Settings
         Me.randomstreambox = New System.Windows.Forms.CheckBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.Namebox = New System.Windows.Forms.MaskedTextBox()
-        Me.Passbox = New System.Windows.Forms.MaskedTextBox()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.tokeninput = New System.Windows.Forms.TextBox()
         Me.tokenlogin = New System.Windows.Forms.CheckBox()
@@ -76,6 +74,8 @@ Partial Class Settings
         Me.Timer5 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.Usernametext = New System.Windows.Forms.TextBox()
+        Me.Passwordtext = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'prioritymode
@@ -558,29 +558,6 @@ Partial Class Settings
         Me.Label19.Text = "Twitch Username:"
         Me.ToolTip1.SetToolTip(Me.Label19, "You can use your Twitch Username to login")
         '
-        'Namebox
-        '
-        Me.Namebox.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Namebox.ForeColor = System.Drawing.Color.Black
-        Me.Namebox.Location = New System.Drawing.Point(151, 507)
-        Me.Namebox.Name = "Namebox"
-        Me.Namebox.Size = New System.Drawing.Size(138, 22)
-        Me.Namebox.TabIndex = 1
-        Me.Namebox.Text = "Username"
-        Me.ToolTip1.SetToolTip(Me.Namebox, "You can use your Twitch Username to login" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
-        '
-        'Passbox
-        '
-        Me.Passbox.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Passbox.ForeColor = System.Drawing.Color.Black
-        Me.Passbox.Location = New System.Drawing.Point(151, 533)
-        Me.Passbox.Name = "Passbox"
-        Me.Passbox.Size = New System.Drawing.Size(138, 22)
-        Me.Passbox.TabIndex = 3
-        Me.Passbox.Text = "Password"
-        Me.ToolTip1.SetToolTip(Me.Passbox, "You can use your Twitch Password to login.")
-        Me.Passbox.UseSystemPasswordChar = True
-        '
         'Label20
         '
         Me.Label20.AutoSize = True
@@ -673,8 +650,29 @@ Partial Class Settings
         '
         Me.Timer5.Interval = 120000
         '
-        'Timer1
+        'Usernametext
         '
+        Me.Usernametext.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Usernametext.ForeColor = System.Drawing.Color.Black
+        Me.Usernametext.Location = New System.Drawing.Point(149, 506)
+        Me.Usernametext.Multiline = True
+        Me.Usernametext.Name = "Usernametext"
+        Me.Usernametext.Size = New System.Drawing.Size(136, 20)
+        Me.Usernametext.TabIndex = 67
+        Me.Usernametext.Text = "Username"
+        Me.ToolTip1.SetToolTip(Me.Usernametext, "Write here your first Message")
+        '
+        'Passwordtext
+        '
+        Me.Passwordtext.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Passwordtext.ForeColor = System.Drawing.Color.Black
+        Me.Passwordtext.Location = New System.Drawing.Point(149, 533)
+        Me.Passwordtext.Multiline = True
+        Me.Passwordtext.Name = "Passwordtext"
+        Me.Passwordtext.Size = New System.Drawing.Size(136, 20)
+        Me.Passwordtext.TabIndex = 68
+        Me.Passwordtext.Text = "Password"
+        Me.ToolTip1.SetToolTip(Me.Passwordtext, "Write here your first Message")
         '
         'Settings
         '
@@ -684,6 +682,8 @@ Partial Class Settings
         Me.BackgroundImage = Global.Twitchbot.My.Resources.Resources.background
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(636, 570)
+        Me.Controls.Add(Me.Passwordtext)
+        Me.Controls.Add(Me.Usernametext)
         Me.Controls.Add(Me.randomstreambox)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.chromehide)
@@ -695,10 +695,8 @@ Partial Class Settings
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.Crossthreadbox)
-        Me.Controls.Add(Me.Passbox)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.Namebox)
         Me.Controls.Add(Me.cookiessave)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.Label16)
@@ -776,8 +774,6 @@ Partial Class Settings
     Public WithEvents randomstreambox As CheckBox
     Public WithEvents Label16 As Label
     Public WithEvents Label19 As Label
-    Public WithEvents Namebox As MaskedTextBox
-    Public WithEvents Passbox As MaskedTextBox
     Public WithEvents Label20 As Label
     Public WithEvents tokeninput As TextBox
     Public WithEvents tokenlogin As CheckBox
@@ -790,4 +786,6 @@ Partial Class Settings
     Friend WithEvents Timer1 As Timer
     Friend WithEvents Timer2 As Timer
     Public WithEvents restart As Button
+    Public WithEvents Usernametext As TextBox
+    Public WithEvents Passwordtext As TextBox
 End Class

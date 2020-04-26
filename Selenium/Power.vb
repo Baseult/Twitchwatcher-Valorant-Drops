@@ -66,6 +66,8 @@ Public Class Power
     Public tokentext As String
     Public Background As Boolean
     Public Userinput As String
+    Public Usernameinput As String
+    Public Passwordinput As String
 
 
     Private do1 As Thread
@@ -310,7 +312,7 @@ Public Class Power
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls And SecurityProtocolType.Tls11 And SecurityProtocolType.Tls12 And SecurityProtocolType.Ssl3 'using outdated securityprotocolsfor https even it is http - even more dumb 
                 Dim ProgramVersion As String = vs.DownloadString(New Uri("http://baseult.com/twitchbot/version.txt"))
-                Dim LocalVersion As String = "1.1.0"
+                Dim LocalVersion As String = "1.1.1"
 
                 If ProgramVersion = LocalVersion Then
                     Chatshow1("Running latest Version: " & LocalVersion)
@@ -448,7 +450,7 @@ Restart:
         If tokenlogin = True Then
             Chatshow1("Starting Browser for: " & tokentext)
         Else
-            Chatshow1("Starting Browser for: " & Userinput)
+            Chatshow1("Starting Browser for: " & Usernameinput)
         End If
 
 
@@ -522,14 +524,14 @@ Restart:
             Else
 
                 Try
-                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[1]/div/div[2]/input")).SendKeys(Userinput)
-                    Chatshow1("Put in Username: " & Userinput)
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[1]/div/div[2]/input")).SendKeys(Usernameinput)
+                    Chatshow1("Put in Username: " & Usernameinput)
                 Catch
                     Chatshow1("Something went wrong with the Username Input")
                 End Try
                 Wait(2000)
                 Try
-                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[2]/div/div[1]/div[2]/div[1]/input")).SendKeys(Passinput)
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[2]/div/div[1]/div[2]/div[1]/input")).SendKeys(Passwordinput)
                     Chatshow1("Put in Password: ********")
                 Catch
                     Chatshow1("Something went wrong with the Password Input")
@@ -953,7 +955,7 @@ Restart:
         End If
 
         If Proxy = True Then
-            options.AddArguments("--proxy-server=" & Settings.proxyinput.Text)
+            options.AddArguments("--proxy-server=" & Proxyport)
         End If
 
         If muteaudio = True Then
@@ -965,9 +967,9 @@ Restart:
         End If
 
         If tokenlogin = True Then
-            Chatshow1("Starting Browser for: " & Settings.tokeninput.Text)
+            Chatshow1("Starting Browser for: " & tokentext)
         Else
-            Chatshow1("Starting Browser for: " & Settings.Namebox.Text)
+            Chatshow1("Starting Browser for: " & Usernameinput)
         End If
 
 
@@ -1039,14 +1041,14 @@ Restart:
             Else
 
                 Try
-                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[1]/div/div[2]/input")).SendKeys(Userinput)
-                    Chatshow1("Put in Username: " & Userinput)
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[1]/div/div[2]/input")).SendKeys(Usernameinput)
+                    Chatshow1("Put in Username: " & Usernameinput)
                 Catch
                     Chatshow1("Something went wrong with the Username Input")
                 End Try
                 Wait(2000)
                 Try
-                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[2]/div/div[1]/div[2]/div[1]/input")).SendKeys(Passinput)
+                    driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div[3]/div/div/div/div[3]/form/div/div[2]/div/div[1]/div[2]/div[1]/input")).SendKeys(Passwordinput)
                     Chatshow1("Put in Password: ********")
                 Catch
                     Chatshow1("Something went wrong with the Password Input")

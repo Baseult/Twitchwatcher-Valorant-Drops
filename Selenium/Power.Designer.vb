@@ -264,6 +264,9 @@ Partial Class Power
         'Timer2
         '
         '
+        'Timer1
+        '
+        '
         'Timer5
         '
         Me.Timer5.Interval = 120000
