@@ -41,11 +41,6 @@ Public Class Settings
         End If
     End Sub
 
-    Public Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Power.Timertext.Text = Val(Power.Timertext.Text) - 1
-        If Power.Timertext.Text < 0 Then Power.Timertext.Text = "Wait.."
-    End Sub
-
     Public Sub Chromehide_CheckedChanged(sender As Object, e As EventArgs) Handles chromehide.CheckedChanged
         If tokenlogin.Checked = True Then
             If chromehide.Checked = True Then

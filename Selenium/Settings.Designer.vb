@@ -72,10 +72,10 @@ Partial Class Settings
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.restart = New System.Windows.Forms.Button()
         Me.Timer5 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.restart = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'prioritymode
@@ -656,13 +656,6 @@ Partial Class Settings
         Me.ToolTip1.InitialDelay = 100
         Me.ToolTip1.ReshowDelay = 20
         '
-        'Timer5
-        '
-        Me.Timer5.Interval = 120000
-        '
-        'Timer1
-        '
-        '
         'restart
         '
         Me.restart.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -675,6 +668,13 @@ Partial Class Settings
         Me.ToolTip1.SetToolTip(Me.restart, "This will restart your Bot with the lowest possible priority." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "It will reduce you" &
         "r CPU while you are playing other games." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Might slow down the Bot)")
         Me.restart.UseVisualStyleBackColor = True
+        '
+        'Timer5
+        '
+        Me.Timer5.Interval = 120000
+        '
+        'Timer1
+        '
         '
         'Settings
         '

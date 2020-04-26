@@ -33,7 +33,7 @@ Partial Class Power
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Firefoxbox = New System.Windows.Forms.CheckBox()
         Me.Remainingtime = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Watchertime = New System.Windows.Forms.Label()
         Me.Dropfound = New System.Windows.Forms.Label()
         Me.Timertext = New System.Windows.Forms.Label()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -173,18 +173,18 @@ Partial Class Power
         Me.Remainingtime.TabIndex = 36
         Me.Remainingtime.Text = "Valorant Drop Found:"
         '
-        'Label4
+        'Watchertime
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer))
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label4.Location = New System.Drawing.Point(171, 9)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(257, 20)
-        Me.Label4.TabIndex = 14
-        Me.Label4.Text = "Remaining watchtime on Streamer:"
-        Me.Label4.Visible = False
+        Me.Watchertime.AutoSize = True
+        Me.Watchertime.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Watchertime.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Watchertime.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Watchertime.Location = New System.Drawing.Point(171, 9)
+        Me.Watchertime.Name = "Watchertime"
+        Me.Watchertime.Size = New System.Drawing.Size(257, 20)
+        Me.Watchertime.TabIndex = 14
+        Me.Watchertime.Text = "Remaining watchtime on Streamer:"
+        Me.Watchertime.Visible = False
         '
         'Dropfound
         '
@@ -288,7 +288,7 @@ Partial Class Power
         Me.Controls.Add(Me.Stopbutton)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Remainingtime)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Watchertime)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Power"
         Me.Text = "Power"
@@ -307,7 +307,7 @@ Partial Class Power
     Friend WithEvents Label2 As Label
     Friend WithEvents Firefoxbox As CheckBox
     Friend WithEvents Remainingtime As Label
-    Friend WithEvents Label4 As Label
+    Friend WithEvents Watchertime As Label
     Friend WithEvents Dropfound As Label
     Friend WithEvents Timertext As Label
     Friend WithEvents PictureBox2 As PictureBox

@@ -192,6 +192,11 @@ Public Class Power
         End If
     End Sub
 
+    Public Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Timertext.Text = Val(Timertext.Text) - 1
+        If Timertext.Text < 0 Then Timertext.Text = "Wait.."
+    End Sub
+
     Private Sub Newinstance(sender As Object, e As EventArgs) Handles Nextbutton.Click
 
         If Chromebox.Checked = False And Firefoxbox.Checked = False Then
@@ -806,10 +811,11 @@ Ignoreit:
                         Catch
                             Try
                                 Chatshow1("Could not change Streamquality")
-                                Refresh()
+                                driver.Navigate.Refresh()
                                 Wait(10000)
+                                GoTo Ignoreit
                             Catch
-                                GoTo watching
+                                GoTo Ignoreit
                             End Try
                         End Try
 
@@ -1219,7 +1225,7 @@ SearchChannel:
             Timertext.Enabled = True
             Timertext.Visible = True
             Timer1.Enabled = True
-            Remainingtime.Visible = True
+            Watchertime.Visible = True
 
             Chatshow1("Found a Streamer. Watching for: " & Waits & " Seconds. Watching Stream: " & Streamername)
 
@@ -1322,10 +1328,11 @@ Ignoreit:
                         Catch
                             Try
                                 Chatshow1("Could not change Streamquality")
-                                Refresh()
+                                driver.Navigate.Refresh()
                                 Wait(10000)
+                                GoTo Ignoreit
                             Catch
-                                GoTo watching
+                                GoTo Ignoreit
                             End Try
                         End Try
 
