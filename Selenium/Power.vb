@@ -11,7 +11,7 @@
 'Using CrossThreadCalls instead of invoke with delegate ^ yes this source is shit > first project in visual basic don't judge me thx.
 'This Source is unoptimized, confusing full of ~Try Catch~ I know you can code that better.. well if you can do, what are you looking for here, program your own bot stop making fun of it ;)
 
-'Copyright(c) 2020 Baseult - https://baseult.com - Discord: https://baseult.com/twitchwatcher
+'Copyright(c) 2020 Baseult - https://baseult.com - Discord: https://baseult.com/twitchbot/redirect.php
 
 
 
