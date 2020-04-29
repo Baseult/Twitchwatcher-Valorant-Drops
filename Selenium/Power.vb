@@ -812,17 +812,15 @@ Ignoreit:
                             Wait(1000)
                         Catch
                             Try
-                                Chatshow1("Could not change Streamquality")
-                                driver.Navigate.Refresh()
-                                Wait(10000)
-                                GoTo Ignoreit
+
+                                driver.FindElement(By.XPath("//*[text()='720p60']")).Click()
+                                Chatshow1("Changed Streamquality to low")
+                                Wait(1000)
                             Catch
                                 GoTo Ignoreit
                             End Try
                         End Try
-
                     End Try
-
                 End Try
             End Try
 
