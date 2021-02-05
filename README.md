@@ -1,4 +1,4 @@
-## Twitchwatcher for Valorant Drops
+## Twitchwatcher for Drops
 
 ![Twitchwatcher](https://i.ibb.co/PFG9tGp/image.png)
 
