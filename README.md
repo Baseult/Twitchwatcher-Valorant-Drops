@@ -1,6 +1,6 @@
 ## Twitchwatcher for Drops
 
-My Discord: https://discord.gg/eRSktWTsCm
+My Discord: https://discord.gg/Tr4YZDKneX
 
 ![Twitchwatcher](https://i.ibb.co/PFG9tGp/image.png)
 
